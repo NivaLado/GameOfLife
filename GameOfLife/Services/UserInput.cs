@@ -8,9 +8,7 @@ namespace GameOfLife
 {
     class UserInput
     {
-        public int width;
-        public int height;
-
+        public int width, height, pattern;
 
         public UserInput()
         {
@@ -19,6 +17,9 @@ namespace GameOfLife
 
             Console.Write("Universe Height : ");
             height = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Choose Patter (0 - 2) : ");
+            pattern = Convert.ToInt32(Console.ReadLine());
 
             Console.Clear();
         }
