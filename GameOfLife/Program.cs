@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace GameOfLife
 {
@@ -7,12 +8,14 @@ namespace GameOfLife
         static void Main(string[] args)
         {
             UserInput init = new UserInput();    
-            Universe universe = new Universe(30, 10, init.pattern);
+            Universe universe = new Universe(init.width, init.height, init.pattern, init.choice);
 
-            while(true)
+            while (true)
             {
-                Console.Title = "Universe is " + universe.years.ToString() + " years with " + universe.cells.ToString() + " cells";
-                universe.DrawFrame();
+                Console.Title = "Generation : " + universe.uState.generation +
+                            " with " + universe.uState.cells + " cells";
+                //Task task = Task.Run(() => universe.Generation();
+                universe.Generation();
                 System.Threading.Thread.Sleep(100);
             }
 

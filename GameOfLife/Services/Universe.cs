@@ -1,63 +1,59 @@
-﻿using GameOfLife.Services;
-using System;
+﻿using System;
+using GameOfLife.Enums;
+using GameOfLife.Models;
+using GameOfLife.Services;
 
 namespace GameOfLife
 {
     class Universe
     {
-        public int years, cells;
-        int Height, Width;
-        bool[,] grid, newGrid;
+        public UniverseState uState;
 
-        public Universe(int width, int height, int pattern)
+        public Universe(int width, int height, int pattern, int choice)
         {
-            Width = width;
-            Height = height;
+            Console.CursorVisible = false;
+            Console.ForegroundColor = ConsoleColor.Green;
 
-            grid = new bool[Width, Height];
-            newGrid = new bool[Width, Height];
+            uState = new UniverseState();
 
-            Console.SetWindowSize(Width + 15, Height + 5);
-
-            Patterns genezis = new Patterns(pattern, grid);
+            if(choice == (int)Choice.LoadGame)
+            {
+                UniverseDataRW rw = new UniverseDataRW();
+                uState = rw.Deserialize();
+            }
+            else if (choice == (int)Choice.NewGame)
+            {
+                uState.Width = width;
+                uState.Height = height;
+                uState.grid = uState.newGrid = new bool[width, height];
+       
+                Patterns genezis = new Patterns(pattern, uState.grid);
+            }
+            GenezisCountOfCells();
         }
 
-        public void DrawFrame()
+        public void Generation()
         {
-            //Save Copy of parent genereation
-            newGrid = grid.Clone() as bool[,];
-            cells = 0;
-            //Count live neightbors
-            for (int i = 0; i < Width; i++)
+            int neighbors;
+            bool state;
+            uState.newGrid = uState.grid.Clone() as bool[,];
+
+            for (int i = 0; i < uState.Width; i++)
             {
-                for (int j = 0; j < Height; j++)
+                for (int j = 0; j < uState.Height; j++)
                 {
-                    bool state = grid[i,j];
-
-                    int neighbors = CountNeightbors(grid, i, j);
-
-                    if (state == true)
-                        cells++;
-
-                    if (state == false && neighbors == 3)
-                    {
-                        newGrid[i, j] = true;
-                    }
-                    else if (state == true && (neighbors < 2 || neighbors > 3))
-                    {
-                        newGrid[i, j] = false;
-                    }
-                    else
-                        newGrid[i, j] = state;
+                    state = uState.grid[i,j];
+                    neighbors = CountNeightbors(i, j);
+                    GameRules(i, j, state, neighbors);
                 }
             }
 
-            Render(newGrid);
-            years++;
-            grid = newGrid.Clone() as bool[,];
+            Render(uState.newGrid);
+            uState.generation++;
+            uState.grid = uState.newGrid.Clone() as bool[,];
         }
 
-        public int CountNeightbors(bool[,] grid, int x, int y)
+        public int CountNeightbors(int x, int y)
         {
             int sum = 0;
 
@@ -65,35 +61,64 @@ namespace GameOfLife
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    int cols = (x + i + Width) % Width;
-                    int rows = (y + j + Height) % Height;
+                    int cols = (x + i + uState.Width) % uState.Width;
+                    int rows = (y + j + uState.Height) % uState.Height;
 
-                    if (grid[cols, rows] == true)
+                    if (uState.grid[cols, rows])
                         sum++;
                 }
             }
 
-            if(grid[x, y] == true)
-            {
+            if(uState.grid[x, y] == true)
                 --sum;
-            }
-
+            
             return sum;
         }
 
-        public void Render(bool[,] grid)
+        public void GameRules(int i, int j, bool state, int neighbors)
         {
-            Console.SetCursorPosition(0, Console.WindowTop);
-            for (int i = 0; i < Height; i++)
+            if (state == false && neighbors == 3)
             {
-                for (int j = 0; j < Width; j++)
-                {
-                    Console.Write(grid[j, i] ? "x" : " ");
+                uState.newGrid[i, j] = true;
+                uState.cells++;
+            }
+            else if (state == true && (neighbors < 2 || neighbors > 3))
+            {
+                uState.newGrid[i, j] = false;
+                uState.cells--;
+            }
+            else
+                uState.newGrid[i, j] = state;
+        }
 
-                    if (j == Width - 1) Console.WriteLine("\r");
+        public void GenezisCountOfCells()
+        {
+            for (int i = 0; i < uState.grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < uState.grid.GetLength(1); j++)
+                {
+                    if(uState.grid[i,j])
+                        uState.cells++;
                 }
             }
         }
 
+
+        //Make separate
+        //IRenderer Iterface
+        public void Render(bool[,] grid)
+        {
+            for (int i = 0; i < uState.Height; i++)
+            {
+                for (int j = 0; j < uState.Width; j++)
+                {
+                    Console.Write(grid[j, i] ? "x" : " ");
+                    //Draw();
+
+                    if (j == uState.Width - 1 && !(i == uState.Height - 1)) Console.WriteLine("\r");
+                }
+            }
+            Console.SetCursorPosition(0, 0);
+        }       
     }
 }
