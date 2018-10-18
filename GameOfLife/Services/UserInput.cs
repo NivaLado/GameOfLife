@@ -1,14 +1,21 @@
 ﻿using System;
 using GameOfLife.Enums;
+using GameOfLife.Constants;
+using GameOfLife.Services;
+using GameOfLife.Interfaces;
 
 namespace GameOfLife
 {
-    class UserInput
+    internal class UserInput
     {
         public int width, height, pattern, choice;
+        Validator validate;
 
         public UserInput()
         {
+            validate = new Validator();
+            validate.ValidateIntMinMax("Message : ","Error Message",0,10);
+
             Validate(
                 "Enter 1 to Generate new Universe \n" +
                 "Enter 2 to Load Existing Universe \n" +
@@ -16,11 +23,16 @@ namespace GameOfLife
                 "Not a valid number, try again.", out choice, 1, 3);
             switch (choice)
             {
-                case (int)Choice.NewGame : NewGame();
+                case (int)Choice.NewGame:
+                    NewGame();
                     break;
-                case (int)Choice.LoadGame : LoadGame();
+
+                case (int)Choice.LoadGame:
+                    LoadGame();
                     break;
-                case (int)Choice.Exit : Environment.Exit(0);
+
+                case (int)Choice.Exit:
+                    Environment.Exit(0);
                     break;
             }
 
@@ -41,9 +53,33 @@ namespace GameOfLife
             Console.ReadKey();
         }
 
+        public void TrackUserUnput()
+        {
+            while (true)
+            {
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.Escape:
+                        Environment.Exit(0);
+                        break;
+
+                    case ConsoleKey.P:
+                        Globals.Pause = !Globals.Pause;
+                        break;
+
+                    case ConsoleKey.S:
+                        Globals.Save = !Globals.Save;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
         public void Validate(string message, string errMsg, out int number, int? min = null, int? max = null)
         {
-            Val:
+        Val:
             Console.Write(message);
             string input = Console.ReadLine();
             while (!Int32.TryParse(input, out number))
@@ -63,9 +99,9 @@ namespace GameOfLife
             }
         }
 
-        public bool Min(int input,int? min)
+        public bool Min(int input, int? min)
         {
-            if(input < min)
+            if (input < min)
             {
                 Console.WriteLine("Should be great than " + min);
                 return true;
