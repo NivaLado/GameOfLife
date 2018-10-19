@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameOfLife.Enums;
+using GameOfLife.Constants;
 using GameOfLife.Services;
 
 namespace GameOfLife
@@ -9,21 +10,20 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            UserInput init = new UserInput();
-            Universe universe = new Universe();
+            UserInterfaceIO init = new UserInterfaceIO();
+            Universe[] universe = new Universe[100];
+            UniverseInitManager universeManger = new UniverseInitManager(universe);
 
-            if (init.choice == (int)Choice.NewGame)
-                universe.NewUniverse(init.width, init.height, init.pattern);
-            if (init.choice == (int)Choice.LoadGame)
-                universe.LoadUniverse();
+            universeManger.NewGameOrLoad(init);
 
-            Task UserInput = new Task(() => init.TrackUserUnput());
+            Task UserInput = new Task(() => new InputManager());
             UserInput.Start();
 
             GenerationManager life = new GenerationManager(universe);
 
             Task task = new Task(() => life.StartLife(100));
             task.Start();
+
             task.Wait();
         }
     }

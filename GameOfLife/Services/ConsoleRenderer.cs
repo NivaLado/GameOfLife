@@ -1,9 +1,8 @@
 ﻿using System;
-using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
 {
-    internal class ConsoleRenderer : IRenderer
+    internal class ConsoleRenderer
     {
         public void Render(bool[,] grid)
         {

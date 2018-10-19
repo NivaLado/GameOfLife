@@ -5,10 +5,10 @@ namespace GameOfLife.Services
 {
     class GenerationManager
     {
-        Universe universe;
-        public GenerationManager(Universe universe)
+        Universe[] _universe;
+        public GenerationManager(Universe[] universe)
         {
-            this.universe = universe;
+            _universe = universe;
         }
 
         public void StartLife(int wait)
@@ -21,9 +21,10 @@ namespace GameOfLife.Services
                 }
                 else if (!Globals.Pause)
                 {
-                    Console.Title = "Generation : " + universe.uState.generation +
-                    " with " + universe.uState.cells + " cells";
-                    universe.Generation();
+                    Console.Title = "Generation : " + _universe[0].uState.generation +
+                    " with " + _universe[0].uState.cells + " cells" + 
+                    " Count of Universes : " + Universe.count;
+                    UniversesIteratot();
                     System.Threading.Thread.Sleep(wait);
                 }
             }
@@ -31,10 +32,16 @@ namespace GameOfLife.Services
 
         public void SaveLife()
         {
-            universe.SaveUniverse();
+            //universe.SaveUniverse();
             Globals.Save = false;
             Globals.Pause = true;
             Console.WriteLine("Game Was Saved");
+        }
+
+        public void UniversesIteratot()
+        {
+            for (int i = 0; i < _universe.Length; ++i)
+                _universe[i].Generation();
         }
     }
 }

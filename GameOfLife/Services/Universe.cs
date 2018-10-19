@@ -8,12 +8,13 @@ namespace GameOfLife
     {
         private ConsoleRenderer renderer;
         public UniverseState uState;
+        public static int count = 0;
 
         public Universe()
         {
             uState = new UniverseState();
             renderer = new ConsoleRenderer();
-
+            count++;
             renderer.CursorVisible(false);
             renderer.Color(ConsoleColor.Green);
         }

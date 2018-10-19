@@ -1,5 +1,4 @@
 ﻿using System;
-using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
 {
