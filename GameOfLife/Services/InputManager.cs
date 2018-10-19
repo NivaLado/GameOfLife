@@ -10,7 +10,7 @@ namespace GameOfLife.Services
             TrackUserUnput();
         }
 
-        public void TrackUserUnput()
+        private void TrackUserUnput()
         {
             while (true)
             {

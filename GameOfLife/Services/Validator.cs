@@ -31,7 +31,7 @@ namespace GameOfLife.Services
             return number;
         }
 
-        public bool Min(int input, int min)
+        private bool Min(int input, int min)
         {
             if (input < min)
             {
@@ -41,7 +41,7 @@ namespace GameOfLife.Services
             return false;
         }
 
-        public bool Max(int input, int max)
+        private bool Max(int input, int max)
         {
             if (input > max)
             {

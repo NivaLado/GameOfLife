@@ -32,21 +32,21 @@ namespace GameOfLife.Services
             action.Invoke();
         }
 
-        void AddBlinker()
+        private void AddBlinker()
         {
             grid[x / 2, y / 2 - 1] = true;
             grid[x / 2, y / 2] = true;
             grid[x / 2, y / 2 + 1] = true;
         }
 
-        void AddGlider()
+        private void AddGlider()
         {
             grid[x / 2, y / 2 - 1] = true;
             grid[x / 2 + 1, y / 2] = true;
             grid[x / 2 - 1, y / 2 + 1] = true; grid[x / 2, y / 2 + 1] = true; grid[x / 2 + 1, y / 2 + 1] = true;
         }
 
-        void Random()
+        private void Random()
         {
             Random generator = new Random();
             int number;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameOfLife.Constants;
+﻿using GameOfLife.Constants;
 
 namespace GameOfLife.Services
 {
@@ -11,14 +6,15 @@ namespace GameOfLife.Services
     {
         private Universe[] _universes;
 
-        public UniverseInitManager(Universe[] universes)
+        public UniverseInitManager(Universe[] universes, UserInterfaceIO init)
         {
             _universes = universes;
             for (int i = 0; i < universes.Length; ++i)
                 universes[i] = new Universe();
+            NewGameOrLoad(init);
         }
 
-        public void NewGameOrLoad(UserInterfaceIO init)
+        private void NewGameOrLoad(UserInterfaceIO init)
         {
             if(init.choice == Choice.NewGame)
             {

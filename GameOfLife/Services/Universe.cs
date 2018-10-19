@@ -1,22 +1,17 @@
-﻿using System;
-using GameOfLife.Models;
+﻿using GameOfLife.Models;
 using GameOfLife.Services;
 
 namespace GameOfLife
 {
     internal class Universe
     {
-        private ConsoleRenderer renderer;
         public UniverseState uState;
         public static int count = 0;
 
         public Universe()
         {
             uState = new UniverseState();
-            renderer = new ConsoleRenderer();
             count++;
-            renderer.CursorVisible(false);
-            renderer.Color(ConsoleColor.Green);
         }
 
         public void NewUniverse(int width, int height, int pattern)
@@ -58,13 +53,11 @@ namespace GameOfLife
                 }
             }
 
-            renderer.Render(uState.newGrid);
-
             uState.generation++;
             uState.grid = uState.newGrid.Clone() as bool[,];
         }
 
-        public int CountNeightbors(int x, int y)
+        private int CountNeightbors(int x, int y)
         {
             int sum = 0;
 
@@ -86,7 +79,7 @@ namespace GameOfLife
             return sum;
         }
 
-        public void GameRules(int i, int j, bool state, int neighbors)
+        private void GameRules(int i, int j, bool state, int neighbors)
         {
             if (state == false && neighbors == 3)
             {
@@ -102,7 +95,7 @@ namespace GameOfLife
                 uState.newGrid[i, j] = state;
         }
 
-        public void GenezisCountOfCells()
+        private void GenezisCountOfCells()
         {
             for (int i = 0; i < uState.grid.GetLength(0); i++)
             {

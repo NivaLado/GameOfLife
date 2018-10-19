@@ -37,7 +37,7 @@ namespace GameOfLife
             Console.Clear();
         }
 
-        public void NewGame()
+        private void NewGame()
         {
             Console.Clear();
             width = validate.ValidateIntMinMax("Universe Width: ", "Not a valid number, try again.", 0, 119);
@@ -45,13 +45,13 @@ namespace GameOfLife
             pattern = validate.ValidateIntMinMax("Universe Pattern (from 0 to 2): ", "Not a valid number, try again.", 0, 2);
         }
 
-        public void LoadGame()
+        private void LoadGame()
         {
             Console.WriteLine("Pres any button to start game");
             Console.ReadKey();
         }
 
-        public void NewGameOrLoad(Universe[] universe)
+        private void NewGameOrLoad(Universe[] universe)
         {
             if (choice == Choice.NewGame)
                 universe[0].NewUniverse(width, height, pattern);

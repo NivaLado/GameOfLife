@@ -4,6 +4,12 @@ namespace GameOfLife.Services
 {
     internal class ConsoleRenderer
     {
+        public ConsoleRenderer()
+        {
+            Color(ConsoleColor.Green);
+            CursorVisible(false);
+        }
+
         public void Render(bool[,] grid)
         {
             for (int i = 0; i < grid.GetLength(1); i++)
@@ -19,12 +25,12 @@ namespace GameOfLife.Services
             Console.SetCursorPosition(0, 0);
         }
 
-        public void Color( ConsoleColor color )
+        private void Color( ConsoleColor color )
         {
             Console.ForegroundColor = color;
         }
 
-        public void CursorVisible(bool visibility)
+        private void CursorVisible(bool visibility)
         {
             Console.CursorVisible = visibility;
         }

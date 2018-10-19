@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameOfLife.Constants;
 using GameOfLife.Services;
 
 namespace GameOfLife
@@ -11,20 +9,22 @@ namespace GameOfLife
         static void Main(string[] args)
         {
             UserInterfaceIO init = new UserInterfaceIO();
-            Universe[] universe = new Universe[100];
-            UniverseInitManager universeManger = new UniverseInitManager(universe);
-
-            universeManger.NewGameOrLoad(init);
+            Universe[] universe = new Universe[1];
+            UniverseInitManager universeManger = new UniverseInitManager(universe, init);
 
             Task UserInput = new Task(() => new InputManager());
             UserInput.Start();
 
             GenerationManager life = new GenerationManager(universe);
-
-            Task task = new Task(() => life.StartLife(100));
-            task.Start();
-
-            task.Wait();
+            
+            //Console.ReadLine();
+            //ConsoleRenderer renderer = new ConsoleRenderer();
+            //while(true)
+            //{
+            //    Universe[] temp =  life.test();
+            //    renderer.Render(temp[0].uState.grid);
+            //    System.Threading.Thread.Sleep(100);
+            //}
         }
     }
 }
