@@ -17,14 +17,7 @@ namespace GameOfLife
 
             GenerationManager life = new GenerationManager(universe);
             
-            //Console.ReadLine();
-            //ConsoleRenderer renderer = new ConsoleRenderer();
-            //while(true)
-            //{
-            //    Universe[] temp =  life.test();
-            //    renderer.Render(temp[0].uState.grid);
-            //    System.Threading.Thread.Sleep(100);
-            //}
+            Console.ReadLine();
         }
     }
 }

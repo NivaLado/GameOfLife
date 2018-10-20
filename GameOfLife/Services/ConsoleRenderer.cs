@@ -23,6 +23,7 @@ namespace GameOfLife.Services
                 }
             }
             Console.SetCursorPosition(0, 0);
+            //Console.Clear();
         }
 
         private void Color( ConsoleColor color )
