@@ -1,17 +1,18 @@
-﻿using GameOfLife.Models;
+﻿using GameOfLife.Interfaces;
+using GameOfLife.Models;
 using GameOfLife.Services;
 
 namespace GameOfLife
 {
-    internal class Universe
+    internal class Universe : IUniverse
     {
-        public UniverseState uState;
-        public static int count = 0;
+        public UniverseState uState { get; set; }
+        public static int UniverseCounter = 0;
 
         public Universe()
         {
             uState = new UniverseState();
-            count++;
+            UniverseCounter++;
         }
 
         public void NewUniverse(int width, int height, int pattern)

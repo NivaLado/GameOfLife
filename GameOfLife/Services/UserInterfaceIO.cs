@@ -1,25 +1,37 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GameOfLife.Constants;
 using GameOfLife.Services;
 
 namespace GameOfLife
 {
-    internal class UserInterfaceIO
+    public sealed class UserInterfaceIO
     {
-        public int width, height, pattern, choice;
-        Validator validate;
-
-        public UserInterfaceIO()
+        #region LazySingleton
+        private static readonly Lazy<UserInterfaceIO> instance = 
+            new Lazy<UserInterfaceIO>(() => new UserInterfaceIO());
+        public static UserInterfaceIO GetInstance
         {
-            validate = new Validator();
+            get
+            {          
+                return instance.Value;
+            }
+        }
+        #endregion
 
-            choice = validate.ValidateIntMinMax(
+        Validator validate = Validator.GetInstance;
+
+        private UserInterfaceIO()
+        {
+            Task.Factory.StartNew(() => new InputManager());
+
+            Globals.Choice = validate.ValidateIntMinMax(
                 "Enter 1 to Generate new Universe \n" +
                 "Enter 2 to Load Existing Universe \n" +
                 "Enter 3 to Exit Game \n",
                 "Not a valid number, try again.", 1, 3);
 
-            switch (choice)
+            switch (Globals.Choice)
             {
                 case Choice.NewGame:
                     NewGame();
@@ -40,9 +52,10 @@ namespace GameOfLife
         private void NewGame()
         {
             Console.Clear();
-            width = validate.ValidateIntMinMax("Universe Width: ", "Not a valid number, try again.", 0, 119);
-            height = validate.ValidateIntMinMax("Universe Height: ", "Not a valid number, try again.", 0, 30);
-            pattern = validate.ValidateIntMinMax("Universe Pattern (from 0 to 2): ", "Not a valid number, try again.", 0, 2);
+            Globals.Universes = validate.ValidateIntMinMax("Universe Count: ", "Not a valid number, try again.", 1, 1000);
+            Globals.Width = validate.ValidateIntMinMax("Universe Width: ", "Not a valid number, try again.", 0, 119);
+            Globals.Height = validate.ValidateIntMinMax("Universe Height: ", "Not a valid number, try again.", 0, 30);
+            Globals.Pattern = validate.ValidateIntMinMax("Universe Pattern (from 0 to 2): ", "Not a valid number, try again.", 0, 2);
         }
 
         private void LoadGame()
@@ -53,10 +66,15 @@ namespace GameOfLife
 
         private void NewGameOrLoad(Universe[] universe)
         {
-            if (choice == Choice.NewGame)
-                universe[0].NewUniverse(width, height, pattern);
-            if (choice == Choice.LoadGame)
+            if (Globals.Choice == Choice.NewGame)
+                universe[0].NewUniverse(Globals.Width, Globals.Height, Globals.Pattern);
+            if (Globals.Choice == Choice.LoadGame)
                 universe[0].LoadUniverse();
+        }
+
+        public void ErrorMessage(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }

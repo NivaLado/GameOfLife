@@ -46,6 +46,7 @@
     <Compile Include="Constants\Choice.cs" />
     <Compile Include="Interfaces\IRenderer.cs" />
     <Compile Include="Constants\Globals.cs" />
+    <Compile Include="Interfaces\IUniverse.cs" />
     <Compile Include="Models\UniverseData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

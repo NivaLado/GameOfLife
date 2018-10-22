@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GameOfLife.Constants;
+using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
 {
     //Make singleton dependency inj
     internal class GenerationManager
     {
-        private ConsoleRenderer renderer;
-        private Universe[] _universe;
+        private IRenderer renderer;
+        private IUniverse[] _universe;
         private Task[] tasks;
 
-        public GenerationManager(Universe[] universe)
+        public GenerationManager(IUniverse[] universe)
         {
             _universe = universe;
             renderer = new ConsoleRenderer();
@@ -24,7 +25,7 @@ namespace GameOfLife.Services
         {
             //"Generation : " + _universe.uState.generation +
             //" with " + _universe.uState.cells + " cells" +
-            Console.Title = " Count of Universes : " + Universe.count;
+            Console.Title = " Count of Universes : " + Universe.UniverseCounter;
             //tasks[0] = new Task(() => Loop(_universe[0]));
             //tasks[0].Start();
             //tasks[0].Wait();
@@ -46,7 +47,7 @@ namespace GameOfLife.Services
         {
             while (true)
             {
-                Console.Title = " Count of Universes : " + Universe.count;
+                Console.Title = " Count of Universes : " + Universe.UniverseCounter;
 
                 Parallel.For(0, _universe.Length, 
                     (i) => Task.Factory.StartNew(
@@ -54,7 +55,9 @@ namespace GameOfLife.Services
                     (p) => ShouldRender(i)
                 ));
 
-                System.Threading.Thread.Sleep(1000);
+                //renderer.Render(_universe[0].uState.grid);
+
+                System.Threading.Thread.Sleep(500);
             }
         }
 
@@ -66,7 +69,7 @@ namespace GameOfLife.Services
             Console.WriteLine("Game Was Saved");
         }
 
-        private void Loop(Universe universe)
+        private void Loop(IUniverse universe)
         {
             //while (true)
             //{

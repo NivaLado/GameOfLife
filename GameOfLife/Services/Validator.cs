@@ -2,8 +2,20 @@
 
 namespace GameOfLife.Services
 {
-    public class Validator
+    public sealed class Validator
     {
+        #region LazySingleton
+        private static readonly Lazy<Validator> instance = 
+            new Lazy<Validator>(()=> new Validator());
+        public static Validator GetInstance
+        {
+            get
+            {
+                return instance.Value;
+            }
+        }
+        #endregion
+
         public int ValidateInt(string message, string errorMessage)
         {
             int number;

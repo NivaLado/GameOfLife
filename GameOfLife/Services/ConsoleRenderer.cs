@@ -1,8 +1,9 @@
 ﻿using System;
+using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
 {
-    internal class ConsoleRenderer
+    internal class ConsoleRenderer : IRenderer
     {
         public ConsoleRenderer()
         {
@@ -23,15 +24,14 @@ namespace GameOfLife.Services
                 }
             }
             Console.SetCursorPosition(0, 0);
-            //Console.Clear();
         }
 
-        private void Color( ConsoleColor color )
+        public void Color( ConsoleColor color )
         {
             Console.ForegroundColor = color;
         }
 
-        private void CursorVisible(bool visibility)
+        public void CursorVisible(bool visibility)
         {
             Console.CursorVisible = visibility;
         }

@@ -1,30 +1,31 @@
 ﻿using GameOfLife.Constants;
+using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
 {
     class UniverseInitManager
     {
-        private Universe[] _universes;
+        public IUniverse[] universes;
 
-        public UniverseInitManager(Universe[] universes, UserInterfaceIO init)
+        public UniverseInitManager()
         {
-            _universes = universes;
+            universes = new Universe[Globals.Universes];
             for (int i = 0; i < universes.Length; ++i)
                 universes[i] = new Universe();
-            NewGameOrLoad(init);
+            NewGameOrLoad();
         }
 
-        private void NewGameOrLoad(UserInterfaceIO init)
+        private void NewGameOrLoad()
         {
-            if(init.choice == Choice.NewGame)
+            if(Globals.Choice == Choice.NewGame)
             {
-                for (int i = 0; i < _universes.Length; ++i)
-                    _universes[i].NewUniverse(init.width, init.height, init.pattern);
+                for (int i = 0; i < universes.Length; ++i)
+                    universes[i].NewUniverse(Globals.Width, Globals.Height, Globals.Pattern);
             }
-            else if (init.choice == Choice.LoadGame)
+            else if (Globals.Choice == Choice.LoadGame)
             {
-                for (int i = 0; i < _universes.Length; ++i)
-                    _universes[i].LoadUniverse();
+                for (int i = 0; i < universes.Length; ++i)
+                    universes[i].LoadUniverse();
             }
 
         }
