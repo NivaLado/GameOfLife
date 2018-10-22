@@ -23,7 +23,7 @@ namespace GameOfLife.Services
             Console.Write(message);
 
             string input = Console.ReadLine();
-            while (!Int32.TryParse(input, out number))
+            while (!int.TryParse(input, out number))
             {
                 Console.WriteLine(errorMessage);
                 Console.Write(message);

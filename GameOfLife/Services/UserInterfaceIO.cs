@@ -5,26 +5,12 @@ using GameOfLife.Services;
 
 namespace GameOfLife
 {
-    public sealed class UserInterfaceIO
+    public class UserInterfaceIO
     {
-        #region LazySingleton
-        private static readonly Lazy<UserInterfaceIO> instance = 
-            new Lazy<UserInterfaceIO>(() => new UserInterfaceIO());
-        public static UserInterfaceIO GetInstance
-        {
-            get
-            {          
-                return instance.Value;
-            }
-        }
-        #endregion
-
         Validator validate = Validator.GetInstance;
 
-        private UserInterfaceIO()
+        public UserInterfaceIO()
         {
-            Task.Factory.StartNew(() => new InputManager());
-
             Globals.Choice = validate.ValidateIntMinMax(
                 "Enter 1 to Generate new Universe \n" +
                 "Enter 2 to Load Existing Universe \n" +
@@ -33,19 +19,20 @@ namespace GameOfLife
 
             switch (Globals.Choice)
             {
-                case Choice.NewGame:
+                case GameStartupChoice.NewGame:
                     NewGame();
                     break;
 
-                case Choice.LoadGame:
+                case GameStartupChoice.LoadGame:
                     LoadGame();
                     break;
 
-                case Choice.Exit:
+                case GameStartupChoice.Exit:
                     Environment.Exit(0);
                     break;
             }
 
+            Task.Factory.StartNew(() => new InputManager());
             Console.Clear();
         }
 
@@ -66,9 +53,9 @@ namespace GameOfLife
 
         private void NewGameOrLoad(Universe[] universe)
         {
-            if (Globals.Choice == Choice.NewGame)
-                universe[0].NewUniverse(Globals.Width, Globals.Height, Globals.Pattern);
-            if (Globals.Choice == Choice.LoadGame)
+            if (Globals.Choice == GameStartupChoice.NewGame)
+                universe[0].CreateUniverse(Globals.Width, Globals.Height, Globals.Pattern);
+            if (Globals.Choice == GameStartupChoice.LoadGame)
                 universe[0].LoadUniverse();
         }
 

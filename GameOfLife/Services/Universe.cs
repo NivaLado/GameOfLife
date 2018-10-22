@@ -15,7 +15,7 @@ namespace GameOfLife
             UniverseCounter++;
         }
 
-        public void NewUniverse(int width, int height, int pattern)
+        public void CreateUniverse(int width, int height, int pattern)
         {
             uState.Width = width;
             uState.Height = height;
@@ -37,7 +37,7 @@ namespace GameOfLife
             rw.Serialize(uState);
         }
 
-        public void Generation()
+        public void UniverseIteration()
         {
             int neighbors;
             bool state;
@@ -49,7 +49,7 @@ namespace GameOfLife
                 for (int j = 0; j < uState.Height; j++)
                 {
                     state = uState.grid[i, j];
-                    neighbors = CountNeightbors(i, j);
+                    neighbors = CountNeightborsSum(i, j);
                     GameRules(i, j, state, neighbors);
                 }
             }
@@ -58,7 +58,7 @@ namespace GameOfLife
             uState.grid = uState.newGrid.Clone() as bool[,];
         }
 
-        private int CountNeightbors(int x, int y)
+        private int CountNeightborsSum(int x, int y)
         {
             int sum = 0;
 

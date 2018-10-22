@@ -6,10 +6,11 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            UserInterfaceIO userInitialization = UserInterfaceIO.GetInstance;
-            UniverseInitManager gameInitialization = new UniverseInitManager();  
+            GameInitialization gameSetup = new GameInitialization();
+            gameSetup.SetupGame();
 
-            GenerationManager life = new GenerationManager(gameInitialization.universes);
+            GenerationManager life = new GenerationManager(gameSetup.universes);
+            life.StartLife();
         }
     }
 }

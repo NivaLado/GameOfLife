@@ -1,6 +1,6 @@
 ﻿namespace GameOfLife.Constants
 {
-    public static class Choice
+    public static class GameStartupChoice
     {
         public const int NewGame = 1;
         public const int LoadGame = 2;

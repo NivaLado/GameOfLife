@@ -3,26 +3,27 @@ using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
 {
-    class UniverseInitManager
+    public class GameInitialization
     {
         public IUniverse[] universes;
 
-        public UniverseInitManager()
+        public GameInitialization()
         {
+            UserInterfaceIO userInitialization = new UserInterfaceIO();
+
             universes = new Universe[Globals.Universes];
             for (int i = 0; i < universes.Length; ++i)
                 universes[i] = new Universe();
-            NewGameOrLoad();
         }
 
-        private void NewGameOrLoad()
+        public void SetupGame()
         {
-            if(Globals.Choice == Choice.NewGame)
+            if(Globals.Choice == GameStartupChoice.NewGame)
             {
                 for (int i = 0; i < universes.Length; ++i)
-                    universes[i].NewUniverse(Globals.Width, Globals.Height, Globals.Pattern);
+                    universes[i].CreateUniverse(Globals.Width, Globals.Height, Globals.Pattern);
             }
-            else if (Globals.Choice == Choice.LoadGame)
+            else if (Globals.Choice == GameStartupChoice.LoadGame)
             {
                 for (int i = 0; i < universes.Length; ++i)
                     universes[i].LoadUniverse();

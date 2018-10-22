@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\Choice.cs" />
+    <Compile Include="Constants\GameStartupChoice.cs" />
     <Compile Include="Interfaces\IRenderer.cs" />
     <Compile Include="Constants\Globals.cs" />
     <Compile Include="Interfaces\IUniverse.cs" />
@@ -56,7 +56,7 @@
     <Compile Include="Services\Patterns.cs" />
     <Compile Include="Services\Universe.cs" />
     <Compile Include="Services\FileReadWrite.cs" />
-    <Compile Include="Services\UniverseInitManager.cs" />
+    <Compile Include="Services\GameInitialization.cs" />
     <Compile Include="Services\UserInterfaceIO.cs" />
     <Compile Include="Services\Validator.cs" />
   </ItemGroup>

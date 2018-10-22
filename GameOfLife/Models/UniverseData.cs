@@ -2,7 +2,7 @@
 namespace GameOfLife.Models
 {
     [Serializable]
-    class UniverseState
+    public class UniverseState
     {
         public int Height { get; set; }
         public int Width { get; set; }

@@ -19,8 +19,7 @@ namespace GameOfLife.Services
             }
             catch (Exception ex)
             {
-                var output = UserInterfaceIO.GetInstance;
-                output.ErrorMessage(ex.Message);
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -37,8 +36,7 @@ namespace GameOfLife.Services
             }
             catch (Exception ex)
             {
-                var output = UserInterfaceIO.GetInstance;
-                output.ErrorMessage(ex.Message);
+                Console.WriteLine(ex.Message);
             }
             return null;
         }
