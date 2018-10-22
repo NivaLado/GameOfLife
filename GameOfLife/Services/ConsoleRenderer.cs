@@ -13,16 +13,24 @@ namespace GameOfLife.Services
 
         public void Render(bool[,] grid)
         {
+            DrawTopLine(grid.GetLength(0));
             for (int i = 0; i < grid.GetLength(1); i++)
             {
                 for (int j = 0; j < grid.GetLength(0); j++)
                 {
-                    Console.Write(grid[j, i] ? "x" : " ");
+                    if (j == 0)
+                        Console.Write("║");
 
-                    if (j == grid.GetLength(0) - 1 && !(i == grid.GetLength(1) - 1))
+                    Console.Write(grid[j, i] ? "x" : " "); 
+
+                    if (j == grid.GetLength(0) - 1) //&& !(i == grid.GetLength(1) - 1)
+                    {
+                        Console.Write("║");
                         Console.WriteLine("\r");
+                    }       
                 }
             }
+            DrawBottomLine(grid.GetLength(0));
             Console.SetCursorPosition(0, 0);
         }
 
@@ -34,6 +42,30 @@ namespace GameOfLife.Services
         public void CursorVisible(bool visibility)
         {
             Console.CursorVisible = visibility;
+        }
+
+        private void DrawTopLine(int width)
+        {
+            Console.Write("╔");
+
+            for (int i = 0; i < width; i++)
+                Console.Write("═");
+
+            Console.Write("╗");
+
+            Console.WriteLine("\r");
+        }
+
+        private void DrawBottomLine(int width)
+        {
+            Console.Write("╚");
+
+            for (int i = 0; i < width; i++)
+                Console.Write("═");
+
+            Console.Write("╝");
+
+            Console.WriteLine("\r");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GameOfLife.Constants;
 using GameOfLife.Interfaces;
@@ -9,6 +10,7 @@ namespace GameOfLife.Services
     {
         private IRenderer renderer;
         private IUniverse[] _universe;
+        bool go = true;
 
         public GenerationManager(IUniverse[] universe)
         {
@@ -18,8 +20,10 @@ namespace GameOfLife.Services
 
         public void StartLife()
         {
-            while (true)
+            while (true && go)
             {
+                go = false;
+                Timer t = new Timer(TimerCallback, null, 0, 1000);
                 if (!Globals.Pause)
                 {
                     Console.Title = " Count of Universes : " + Universe.UniverseCounter;
@@ -37,8 +41,15 @@ namespace GameOfLife.Services
                     SaveLife();
                 }
 
-                System.Threading.Thread.Sleep(1000);
+                //System.Threading.Thread.Sleep(1000);
             }
+        }
+
+        private void TimerCallback(Object o)
+        {
+            go = true;
+            //Console.WriteLine("In TimerCallback: " + DateTime.Now);
+            //GC.Collect();
         }
 
         private void SaveLife()
