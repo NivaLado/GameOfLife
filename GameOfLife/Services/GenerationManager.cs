@@ -12,11 +12,18 @@ namespace GameOfLife.Services
     {
         private IRenderer _renderer;
         private IUniverse[] _universe;
+        private List<bool[,]> buffer;
 
         public GenerationManager(IUniverse[] universe, IRenderer renderer)
         {
             _universe = universe;
             _renderer = renderer;
+
+            buffer = new List<bool[,]>();
+            for (int i = 0; i < _universe.Length; i++)
+            {
+                buffer.Add(_universe[i].uState.grid);
+            }
         }
 
         public void StartLife()
@@ -32,14 +39,10 @@ namespace GameOfLife.Services
                         () => Loop(_universe[i]))
                     );
 
-                    List<bool[,]> buffer = new List<bool[,]>();
-                    for (int i = 0; i < _universe.Length; i++)
-                    {
-                        buffer.Add(_universe[i].uState.grid);
-                    }
+
+
                     _renderer.MultipleRender(buffer);
 
-                    //_renderer.Render(_universe[0].uState.grid);
                 }
 
                 if (Globals.Save)

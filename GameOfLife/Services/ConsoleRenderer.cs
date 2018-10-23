@@ -14,13 +14,18 @@ namespace GameOfLife.Services
 
         public void Render(bool[,] grid, int xOffset = 0, int yOffset = 0)
         {
+            Console.SetCursorPosition(xOffset, Console.CursorTop);
             DrawTopLine(grid.GetLength(0));
             for (int i = 0; i < grid.GetLength(1); i++)
             {
                 for (int j = 0; j < grid.GetLength(0); j++)
                 {
+                    
                     if (j == 0)
+                    {
+                        Console.SetCursorPosition(xOffset, Console.CursorTop);
                         Console.Write("║");
+                    }
 
                     Console.Write(grid[j, i] ? "x" : " "); 
 
@@ -28,22 +33,30 @@ namespace GameOfLife.Services
                     {
                         Console.Write("║");
                         Console.WriteLine("\r");
+                        Console.SetCursorPosition(xOffset, Console.CursorTop);
                     }       
                 }
             }
             DrawBottomLine(grid.GetLength(0));
-            Console.SetCursorPosition(0, yOffset);
+            Console.SetCursorPosition(xOffset, yOffset);
         }
 
         public void MultipleRender(List<bool[,]> grid)
         {
+            int borderOffset = 2;
             int xOffset = 0;
             int yOffset = 0;
             for (int i = 0; i < grid.Count; i++)
             {
+                if (xOffset >= 120)
+                {
+                    xOffset = 0;
+                    yOffset += grid[i].GetLength(1) + borderOffset;
+                }
+                
                 Render(grid[i], xOffset, yOffset);
-                yOffset += grid[i].GetLength(1) + 2;
-                //yOffset += grid[i].GetLength(0) + 2;
+
+                xOffset += grid[i].GetLength(0) + borderOffset;
             }    
         }
 
