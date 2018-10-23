@@ -11,13 +11,13 @@ namespace GameOfLife
 
         public UserInterfaceIO()
         {
-            Globals.Choice = validate.ValidateIntMinMax(
+            Globals.UserMenuChoice = validate.ValidateIntMinMax(
                 "Enter 1 to Generate new Universe \n" +
                 "Enter 2 to Load Existing Universe \n" +
                 "Enter 3 to Exit Game \n",
                 "Not a valid number, try again.", 1, 3);
 
-            switch (Globals.Choice)
+            switch (Globals.UserMenuChoice)
             {
                 case GameStartupChoice.NewGame:
                     NewGame();
@@ -49,14 +49,6 @@ namespace GameOfLife
         {
             Console.WriteLine("Pres any button to start game");
             Console.ReadKey();
-        }
-
-        private void NewGameOrLoad(Universe[] universe)
-        {
-            if (Globals.Choice == GameStartupChoice.NewGame)
-                universe[0].CreateUniverse(Globals.Width, Globals.Height, Globals.Pattern);
-            if (Globals.Choice == GameStartupChoice.LoadGame)
-                universe[0].LoadUniverse();
         }
 
         public void ErrorMessage(string message)

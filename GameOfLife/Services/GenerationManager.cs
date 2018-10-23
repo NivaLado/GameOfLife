@@ -1,29 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GameOfLife.Constants;
 using GameOfLife.Interfaces;
+using GameOfLife.Models;
 
 namespace GameOfLife.Services
 {
     internal class GenerationManager
     {
-        private IRenderer renderer;
+        private IRenderer _renderer;
         private IUniverse[] _universe;
-        bool go = true;
 
-        public GenerationManager(IUniverse[] universe)
+        public GenerationManager(IUniverse[] universe, IRenderer renderer)
         {
             _universe = universe;
-            renderer = new ConsoleRenderer();
+            _renderer = renderer;
         }
 
         public void StartLife()
         {
-            while (true && go)
+            while (true)
             {
-                go = false;
-                Timer t = new Timer(TimerCallback, null, 0, 1000);
                 if (!Globals.Pause)
                 {
                     Console.Title = " Count of Universes : " + Universe.UniverseCounter;
@@ -33,7 +32,14 @@ namespace GameOfLife.Services
                         () => Loop(_universe[i]))
                     );
 
-                    renderer.Render(_universe[0].uState.grid);
+                    List<bool[,]> buffer = new List<bool[,]>();
+                    for (int i = 0; i < _universe.Length; i++)
+                    {
+                        buffer.Add(_universe[i].uState.grid);
+                    }
+                    _renderer.MultipleRender(buffer);
+
+                    //_renderer.Render(_universe[0].uState.grid);
                 }
 
                 if (Globals.Save)
@@ -41,20 +47,21 @@ namespace GameOfLife.Services
                     SaveLife();
                 }
 
-                //System.Threading.Thread.Sleep(1000);
+                Task.Delay(1000).Wait();
             }
-        }
-
-        private void TimerCallback(Object o)
-        {
-            go = true;
-            //Console.WriteLine("In TimerCallback: " + DateTime.Now);
-            //GC.Collect();
         }
 
         private void SaveLife()
         {
-            _universe[0].SaveUniverse();
+            FileReadWrite rw = new FileReadWrite();
+            UniverseState[] st = new UniverseState[_universe.Length];
+
+            for (int i = 0; i < _universe.Length; i++)
+            {
+                st[i] = _universe[i].uState;
+            }
+            rw.Serialize(st);
+
             Globals.Save = false;
             Globals.Pause = true;
             Console.WriteLine("Game Was Saved");
@@ -63,14 +70,6 @@ namespace GameOfLife.Services
         private void Loop(IUniverse universe)
         {
             universe.UniverseIteration();
-        }
-
-        private void ShouldIRender(int visibleUniverse)
-        {
-            if (visibleUniverse == 0)
-            {
-                renderer.Render(_universe[visibleUniverse].uState.grid);
-            }
         }
     }
 }

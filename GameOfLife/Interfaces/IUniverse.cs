@@ -8,7 +8,5 @@ namespace GameOfLife.Interfaces
 
         void UniverseIteration();
         void CreateUniverse(int width, int height, int pattern);
-        void LoadUniverse();
-        void SaveUniverse();
     }
 }

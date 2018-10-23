@@ -1,4 +1,5 @@
-﻿using GameOfLife.Services;
+﻿using System;
+using GameOfLife.Services;
 
 namespace GameOfLife
 {
@@ -9,7 +10,8 @@ namespace GameOfLife
             GameInitialization gameSetup = new GameInitialization();
             gameSetup.SetupGame();
 
-            GenerationManager life = new GenerationManager(gameSetup.universes);
+            GenerationManager life = new GenerationManager(gameSetup.universes, 
+                                                            new ConsoleRenderer());
             life.StartLife();
         }
     }

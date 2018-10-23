@@ -8,7 +8,7 @@ namespace GameOfLife.Services
 {
     internal class FileReadWrite
     {
-        public void Serialize(UniverseState obj)
+        public void Serialize(UniverseState[] obj)
         {
             try
             {
@@ -23,14 +23,14 @@ namespace GameOfLife.Services
             }
         }
 
-        public UniverseState Deserialize()
+        public UniverseState[] Deserialize()
         {
             try
             {
-                UniverseState obj = new UniverseState();
+                UniverseState[] obj;
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream("MyFile.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
-                obj = (UniverseState)formatter.Deserialize(stream);
+                obj = (UniverseState[])formatter.Deserialize(stream);
                 stream.Close();
                 return obj;
             }

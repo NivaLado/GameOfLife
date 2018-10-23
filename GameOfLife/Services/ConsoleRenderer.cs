@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
@@ -11,7 +12,7 @@ namespace GameOfLife.Services
             CursorVisible(false);
         }
 
-        public void Render(bool[,] grid)
+        public void Render(bool[,] grid, int xOffset = 0, int yOffset = 0)
         {
             DrawTopLine(grid.GetLength(0));
             for (int i = 0; i < grid.GetLength(1); i++)
@@ -31,15 +32,27 @@ namespace GameOfLife.Services
                 }
             }
             DrawBottomLine(grid.GetLength(0));
-            Console.SetCursorPosition(0, 0);
+            Console.SetCursorPosition(0, yOffset);
         }
 
-        public void Color( ConsoleColor color )
+        public void MultipleRender(List<bool[,]> grid)
+        {
+            int xOffset = 0;
+            int yOffset = 0;
+            for (int i = 0; i < grid.Count; i++)
+            {
+                Render(grid[i], xOffset, yOffset);
+                yOffset += grid[i].GetLength(1) + 2;
+                //yOffset += grid[i].GetLength(0) + 2;
+            }    
+        }
+
+        private void Color( ConsoleColor color )
         {
             Console.ForegroundColor = color;
         }
 
-        public void CursorVisible(bool visibility)
+        private void CursorVisible(bool visibility)
         {
             Console.CursorVisible = visibility;
         }

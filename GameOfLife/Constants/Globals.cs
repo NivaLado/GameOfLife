@@ -8,6 +8,6 @@
         public static int  Width     = 119;
         public static int  Height    = 30;
         public static int  Pattern   = 0;
-        public static int  Choice    = 1;
+        public static int  UserMenuChoice    = 1;
     }
 }

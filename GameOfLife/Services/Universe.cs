@@ -25,18 +25,6 @@ namespace GameOfLife
             GenezisCountOfCells();
         }
 
-        public void LoadUniverse()
-        {
-            FileReadWrite rw = new FileReadWrite();
-            uState = rw.Deserialize();
-        }
-
-        public void SaveUniverse()
-        {
-            FileReadWrite rw = new FileReadWrite();
-            rw.Serialize(uState);
-        }
-
         public void UniverseIteration()
         {
             int neighbors;
