@@ -2,11 +2,15 @@
 
 namespace GameOfLife.Services
 {
-    public sealed class Validator
+                            /*WORK IN PROGRESS*/
+    /* THIS CLASS IS NOT FOLLOWING Single responsibility principle = ( */
+    public class Validator
     {
         #region LazySingleton
-        private static readonly Lazy<Validator> instance = 
-            new Lazy<Validator>(()=> new Validator());
+
+        private static readonly Lazy<Validator> instance =
+            new Lazy<Validator>(() => new Validator());
+
         public static Validator GetInstance
         {
             get
@@ -14,7 +18,8 @@ namespace GameOfLife.Services
                 return instance.Value;
             }
         }
-        #endregion
+
+        #endregion LazySingleton
 
         public int ValidateInt(string message, string errorMessage)
         {
@@ -39,7 +44,7 @@ namespace GameOfLife.Services
             {
                 number = ValidateInt(message, errorMessage);
             } while (Min(number, min) || Max(number, max));
-            
+
             return number;
         }
 
@@ -64,3 +69,4 @@ namespace GameOfLife.Services
         }
     }
 }
+ 

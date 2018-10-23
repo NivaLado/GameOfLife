@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace GameOfLife.Interfaces
+﻿namespace GameOfLife.Interfaces
 {
     internal interface IRenderer
     {
-        void Render(bool[,] grid, int xOffset, int yOffset);
-        void MultipleRender(List<bool[,]> grid);
+        void RenderOneField(Universe grid, int xOffset, int yOffset);
+        void RenderMultipleFields(Universe[] _universe);
+        void Clear();
     }
 }

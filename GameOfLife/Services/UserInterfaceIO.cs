@@ -7,7 +7,7 @@ namespace GameOfLife
 {
     public class UserInterfaceIO
     {
-        Validator validate = Validator.GetInstance;
+        private Validator validate = Validator.GetInstance;
 
         public UserInterfaceIO()
         {

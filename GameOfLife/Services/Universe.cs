@@ -1,13 +1,13 @@
-﻿using GameOfLife.Interfaces;
-using GameOfLife.Models;
+﻿using GameOfLife.Models;
 using GameOfLife.Services;
 
 namespace GameOfLife
 {
-    internal class Universe : IUniverse
+    public class Universe
     {
         public UniverseState uState { get; set; }
         public static int UniverseCounter = 0;
+        private bool notDead = true;
 
         public Universe()
         {
@@ -30,20 +30,24 @@ namespace GameOfLife
             int neighbors;
             bool state;
 
-            uState.newGrid = uState.grid.Clone() as bool[,];
-
-            for (int i = 0; i < uState.Width; i++)
+            if(notDead)
             {
-                for (int j = 0; j < uState.Height; j++)
-                {
-                    state = uState.grid[i, j];
-                    neighbors = CountNeightborsSum(i, j);
-                    GameRules(i, j, state, neighbors);
-                }
-            }
+                uState.newGrid = uState.grid.Clone() as bool[,];
 
-            uState.generation++;
-            uState.grid = uState.newGrid.Clone() as bool[,];
+                for (int i = 0; i < uState.Width; i++)
+                {
+                    for (int j = 0; j < uState.Height; j++)
+                    {
+                        state = uState.grid[i, j];
+                        neighbors = CountNeightborsSum(i, j);
+                        GameRules(i, j, state, neighbors);
+                    }
+                }
+
+                LiveCheck();
+                uState.generation++;
+                uState.grid = uState.newGrid.Clone() as bool[,];
+            }
         }
 
         private int CountNeightborsSum(int x, int y)
@@ -91,8 +95,19 @@ namespace GameOfLife
                 for (int j = 0; j < uState.grid.GetLength(1); j++)
                 {
                     if (uState.grid[i, j])
+                    {
                         uState.cells++;
+                    }
                 }
+            }
+        }
+
+        private void LiveCheck()
+        {
+            if(uState.cells == 0)
+            {
+                notDead = false;
+                UniverseCounter--;
             }
         }
     }

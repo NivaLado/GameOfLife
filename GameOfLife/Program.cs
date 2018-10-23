@@ -1,18 +1,22 @@
-﻿using System;
-using GameOfLife.Services;
+﻿using GameOfLife.Services;
 
 namespace GameOfLife
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            GameInitialization gameSetup = new GameInitialization();
+            var gameSetup = new GameInitialization();
             gameSetup.SetupGame();
 
-            GenerationManager life = new GenerationManager(gameSetup.universes, 
-                                                            new ConsoleRenderer());
+            var life = new GenerationManager(
+                gameSetup.universes,
+                new ConsoleRenderer()
+            );
+            
             life.StartLife();
         }
     }
 }
+
+//Nuget Package -Simple injector 

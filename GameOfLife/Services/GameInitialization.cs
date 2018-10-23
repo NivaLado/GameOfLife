@@ -1,12 +1,11 @@
 ﻿using GameOfLife.Constants;
-using GameOfLife.Interfaces;
 using GameOfLife.Models;
 
 namespace GameOfLife.Services
 {
     public class GameInitialization
     {
-        public IUniverse[] universes;
+        public Universe[] universes;
 
         public GameInitialization()
         {
@@ -15,7 +14,7 @@ namespace GameOfLife.Services
 
         public void SetupGame()
         {
-            if(Globals.UserMenuChoice == GameStartupChoice.NewGame)
+            if (Globals.UserMenuChoice == GameStartupChoice.NewGame)
             {
                 universes = new Universe[Globals.Universes];
 
@@ -27,8 +26,8 @@ namespace GameOfLife.Services
             }
             else if (Globals.UserMenuChoice == GameStartupChoice.LoadGame)
             {
-                FileReadWrite rw = new FileReadWrite();
-                UniverseState[] obj =  rw.Deserialize();
+                FileReadWrite rw = FileReadWrite.GetReadWriteService;
+                UniverseState[] obj = rw.Deserialize();
 
                 universes = new Universe[obj.Length];
 
@@ -37,9 +36,7 @@ namespace GameOfLife.Services
                     universes[i] = new Universe();
                     universes[i].uState = obj[i];
                 }
-
             }
-
         }
     }
 }

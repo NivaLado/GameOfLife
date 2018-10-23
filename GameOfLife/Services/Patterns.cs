@@ -4,9 +4,9 @@ namespace GameOfLife.Services
 {
     public class Patterns
     {
-        Action action;
-        bool[,] grid;
-        int x, y;
+        private Action action;
+        private bool[,] grid;
+        private int x, y;
 
         public Patterns(int select, bool[,] grid)
         {
@@ -19,12 +19,15 @@ namespace GameOfLife.Services
                 case 0:
                     action = new Action(AddBlinker);
                     break;
+
                 case 1:
                     action = new Action(AddGlider);
                     break;
+
                 case 2:
                     action = new Action(Random);
                     break;
+
                 default:
                     break;
             }
@@ -48,7 +51,7 @@ namespace GameOfLife.Services
 
         private void Random()
         {
-            Random generator = new Random();
+            Random generator = new Random(Guid.NewGuid().GetHashCode());
             int number;
             for (int i = 0; i < x; i++)
             {

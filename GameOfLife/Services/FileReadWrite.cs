@@ -6,8 +6,23 @@ using GameOfLife.Models;
 
 namespace GameOfLife.Services
 {
-    internal class FileReadWrite
+    public class FileReadWrite
     {
+        #region LazySingleton
+
+        private static readonly Lazy<FileReadWrite> instance =
+            new Lazy<FileReadWrite>(() => new FileReadWrite());
+
+        public static FileReadWrite GetReadWriteService
+        {
+            get
+            {
+                return instance.Value;
+            }
+        }
+
+        #endregion LazySingleton
+
         public void Serialize(UniverseState[] obj)
         {
             try

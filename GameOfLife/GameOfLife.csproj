@@ -46,7 +46,6 @@
     <Compile Include="Constants\GameStartupChoice.cs" />
     <Compile Include="Interfaces\IRenderer.cs" />
     <Compile Include="Constants\Globals.cs" />
-    <Compile Include="Interfaces\IUniverse.cs" />
     <Compile Include="Models\UniverseState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
