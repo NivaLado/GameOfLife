@@ -36,10 +36,11 @@ namespace GameOfLife.Services
                 for (int i = 0; i < universes.Length; ++i)
                 {
                     universes[i] = new Universe();
-                    universes[i].uState = obj[i];
+                    universes[i].UState = obj[i];
                 }
             }
 
+            LiveUniverses();
             VisibleUniverses();
         }
 
@@ -49,6 +50,17 @@ namespace GameOfLife.Services
             for (int i = 0; i < Globals.GamesToRender.Length; i++)
             {
                 visibleUniverses.Add(universes[Globals.GamesToRender[i]]);
+            }
+        }
+
+        private void LiveUniverses()
+        {
+            for (int i = 0; i < universes.Length; i++)
+            {
+                if(universes[i].UState.notDead)
+                {
+                    Universe.UniverseCounter++;
+                }
             }
         }
     }

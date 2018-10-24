@@ -23,11 +23,7 @@ namespace GameOfLife.Services
             {
                 if (!Globals.Pause)
                 {
-                    Console.Title =
-                        "Live Universes : {" +
-                        Universe.UniverseCounter + "}" +
-                        " (c) is live cells! (g) is generation"
-                        ;
+                    ConsoleTitle();
 
                     Parallel.For(0, _gameSetup.universes.Length,
                         (i) => Task.Factory.StartNew(
@@ -49,8 +45,7 @@ namespace GameOfLife.Services
                     changeTask.Wait();
                 }
 
-                Task.Delay(500).Wait();
-                //Thread.Sleep(1000);
+                Task.Delay(500).Wait();//Magic num
             }
         }
 
@@ -58,35 +53,43 @@ namespace GameOfLife.Services
         {
             FileReadWrite rw = FileReadWrite.GetReadWriteService;
             UniverseState[] st = new UniverseState[_gameSetup.universes.Length];
-
             for (int i = 0; i < _gameSetup.universes.Length; i++)
             {
-                st[i] = _gameSetup.universes[i].uState;
+                st[i] = _gameSetup.universes[i].UState;
             }
             rw.Serialize(st);
 
-            Globals.Save = false;
+            Globals.Save = false;  //Class should controll self state
             Globals.Pause = true;
+
             _renderer.Clear();
-            Console.WriteLine("Game Was Saved");
+            _renderer.Color(ConsoleColor.White);
+            Console.WriteLine("Game Was Saved Press Enter to continue");
+            Console.ReadLine();
+            Globals.Pause = false;
+            _renderer.Clear();
         }
 
         private void ChangeVisibleGames()
         {
             Globals.Pause = !Globals.Pause;
             _renderer.Clear();
+            _renderer.CursorVisible(true);
+            _renderer.Color(ConsoleColor.White);
 
             Console.Write("Enter games to render int format (1 2 5 122 ...) -> ");
 
             string line = Console.ReadLine();
-
             Validator validator = Validator.GetInstance;
 
             Globals.GamesToRender = validator.StringToInt(line);
-            _gameSetup.VisibleUniverses();
-
             Globals.ChangeVisibleGames = false;
             Globals.Pause = !Globals.Pause;
+
+            _gameSetup.VisibleUniverses();
+
+            _renderer.CursorVisible(false);
+            _renderer.Clear();
         }
 
         private void RenderTask()
@@ -94,9 +97,24 @@ namespace GameOfLife.Services
             _renderer.RenderMultipleFields(_gameSetup.visibleUniverses);
         }
 
-        private void Loop(Universe universe)
+        private void ConsoleTitle()
         {
-            universe.UniverseIteration();
+            Console.Title =
+                "Live Universes : {" +
+                Universe.UniverseCounter + "}" +
+                "Live Cells : {" +
+                LiveCellsCounter() + "}" +
+                " (c) is live cells! (g) is generation";
+        }
+
+        private int LiveCellsCounter()
+        {
+            int sum = 0;
+            for (int i = 0; i < _gameSetup.universes.Length; i++)
+            {
+                sum += _gameSetup.universes[i].UState.cells;
+            }
+            return sum;
         }
     }
 }

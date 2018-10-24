@@ -23,10 +23,12 @@ namespace GameOfLife.Services
 
                     case ConsoleKey.P:
                         Globals.Pause = !Globals.Pause;
+                        Task.Delay(1000).Wait();
                         break;
 
                     case ConsoleKey.S:
                         Globals.Save = !Globals.Save;
+                        Task.Delay(1000).Wait();
                         break;
 
                     case ConsoleKey.D:

@@ -2,8 +2,9 @@
 
 namespace GameOfLife.Services
 {
-                            /*WORK IN PROGRESS*/
+    /*WORK IN PROGRESS*/
     /* THIS CLASS IS NOT FOLLOWING Single responsibility principle = ( */
+
     public class Validator
     {
         #region LazySingleton
@@ -18,6 +19,8 @@ namespace GameOfLife.Services
                 return instance.Value;
             }
         }
+
+        private Validator() { }
 
         #endregion LazySingleton
 
@@ -76,4 +79,3 @@ namespace GameOfLife.Services
         }
     }
 }
- 

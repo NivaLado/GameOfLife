@@ -21,15 +21,17 @@ namespace GameOfLife.Services
             }
         }
 
+        private FileReadWrite() { }
+
         #endregion LazySingleton
 
-        public void Serialize(UniverseState[] obj)
+        public void Serialize(UniverseState[] obj) //split 
         {
             try
             {
-                IFormatter formatter = new BinaryFormatter();
+                IFormatter formatter = new BinaryFormatter(); //Streams
                 Stream stream = new FileStream("MyFile.bin", FileMode.Create, FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, obj);
+                formatter.Serialize(stream, obj); //serial
                 stream.Close();
             }
             catch (Exception ex)

@@ -5,25 +5,24 @@ namespace GameOfLife
 {
     public class Universe
     {
-        public UniverseState uState { get; set; }
+        public UniverseState UState { get; set; }
         public static int UniverseCounter = 0;
-        public static int id = 0;
+        private static int _id = 0;
 
         public Universe()
         {
-            uState = new UniverseState();
-            uState.id = id;
-            id++;
-            UniverseCounter++;
+            UState = new UniverseState();
+            UState.id = _id;
+            _id++;
         }
 
         public void CreateUniverse(int width, int height, int pattern)
         {
-            uState.Width = width;
-            uState.Height = height;
-            uState.grid = uState.newGrid = new bool[width, height];
+            UState.Width = width;
+            UState.Height = height;
+            UState.grid = UState.newGrid = new bool[width, height];
 
-            Patterns genezis = new Patterns(pattern, uState.grid);
+            Patterns genezis = new Patterns(pattern, UState.grid);
             GenezisCountOfCells();
         }
 
@@ -32,23 +31,23 @@ namespace GameOfLife
             int neighbors;
             bool state;
 
-            if(uState.notDead)
+            if (UState.notDead)
             {
-                uState.newGrid = uState.grid.Clone() as bool[,];
+                UState.newGrid = UState.grid.Clone() as bool[,];
 
-                for (int i = 0; i < uState.Width; i++)
+                for (int i = 0; i < UState.Width; i++)
                 {
-                    for (int j = 0; j < uState.Height; j++)
+                    for (int j = 0; j < UState.Height; j++)
                     {
-                        state = uState.grid[i, j];
+                        state = UState.grid[i, j];
                         neighbors = CountNeightborsSum(i, j);
                         GameRules(i, j, state, neighbors);
                     }
                 }
 
                 LiveCheck();
-                uState.generation++;
-                uState.grid = uState.newGrid.Clone() as bool[,];
+                UState.generation++;
+                UState.grid = UState.newGrid.Clone() as bool[,];
             }
         }
 
@@ -60,15 +59,15 @@ namespace GameOfLife
             {
                 for (int j = -1; j < 2; j++)
                 {
-                    int cols = (x + i + uState.Width) % uState.Width;
-                    int rows = (y + j + uState.Height) % uState.Height;
+                    int cols = (x + i + UState.Width) % UState.Width;
+                    int rows = (y + j + UState.Height) % UState.Height;
 
-                    if (uState.grid[cols, rows])
+                    if (UState.grid[cols, rows])
                         sum++;
                 }
             }
 
-            if (uState.grid[x, y] == true)
+            if (UState.grid[x, y] == true)
                 --sum;
 
             return sum;
@@ -78,27 +77,27 @@ namespace GameOfLife
         {
             if (state == false && neighbors == 3)
             {
-                uState.newGrid[i, j] = true;
-                uState.cells++;
+                UState.newGrid[i, j] = true;
+                UState.cells++;
             }
             else if (state == true && (neighbors < 2 || neighbors > 3))
             {
-                uState.newGrid[i, j] = false;
-                uState.cells--;
+                UState.newGrid[i, j] = false;
+                UState.cells--;
             }
             else
-                uState.newGrid[i, j] = state;
+                UState.newGrid[i, j] = state;
         }
 
         private void GenezisCountOfCells()
         {
-            for (int i = 0; i < uState.grid.GetLength(0); i++)
+            for (int i = 0; i < UState.grid.GetLength(0); i++)
             {
-                for (int j = 0; j < uState.grid.GetLength(1); j++)
+                for (int j = 0; j < UState.grid.GetLength(1); j++)
                 {
-                    if (uState.grid[i, j])
+                    if (UState.grid[i, j])
                     {
-                        uState.cells++;
+                        UState.cells++;
                     }
                 }
             }
@@ -106,9 +105,9 @@ namespace GameOfLife
 
         private void LiveCheck()
         {
-            if(uState.cells == 0)
+            if (UState.cells == 0)
             {
-                uState.notDead = false;
+                UState.notDead = false;
                 UniverseCounter--;
             }
         }

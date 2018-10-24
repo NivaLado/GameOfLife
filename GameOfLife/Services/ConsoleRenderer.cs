@@ -15,15 +15,15 @@ namespace GameOfLife.Services
         public void RenderOneField(Universe field, int xOffset, int yOffset)
         {
             Console.SetCursorPosition(xOffset, yOffset);
-            FieldColor(field.uState.notDead);
+            FieldColor(field.UState.notDead);
 
             var y = Console.CursorTop;
-            var grid = field.uState.grid;
+            var grid = field.UState.grid;
             FieldInfo(
                 grid.GetLength(0),
-                field.uState.cells, 
-                field.uState.generation, 
-                field.uState.id, xOffset, y);
+                field.UState.cells,
+                field.UState.generation,
+                field.UState.id, xOffset, y);
 
             Console.SetCursorPosition(xOffset, Console.CursorTop);
             DrawTopLine(grid.GetLength(0));
@@ -31,7 +31,7 @@ namespace GameOfLife.Services
             {
                 for (int j = 0; j < grid.GetLength(0); j++)
                 {
-                    DrawLeftBorder(j , xOffset);
+                    DrawLeftBorder(j, xOffset);
                     Console.Write(grid[j, i] ? "x" : " ");
                     DrawRightBorder(j, xOffset, grid);
                 }
@@ -41,17 +41,16 @@ namespace GameOfLife.Services
 
         public void RenderMultipleFields(List<Universe> _universe)
         {
-            //Console.Clear();
             Console.SetCursorPosition(0, 0);
             int borderOffset = 2;
             int xOffset = 0, yOffset = 0;
 
-            int height = _universe[0].uState.grid.GetLength(1);
-            int width = _universe[0].uState.grid.GetLength(0);
+            int height = _universe[0].UState.grid.GetLength(1);
+            int width = _universe[0].UState.grid.GetLength(0);
 
             for (int i = 0; i < _universe.Count; i++)
             {
-                if (xOffset >= 110)
+                if (xOffset >= 120)
                 {
                     xOffset = 0;
                     yOffset += height + borderOffset + 3;
@@ -68,27 +67,26 @@ namespace GameOfLife.Services
             Console.Clear();
         }
 
-        private void Color(ConsoleColor color)
+        public void Color(ConsoleColor color)
         {
             Console.ForegroundColor = color;
         }
 
+        public void CursorVisible(bool visibility)
+        {
+            Console.CursorVisible = visibility;
+        }
+
         private void FieldColor(bool notDead)
         {
-            if(notDead)
+            if (notDead)
             {
-                
                 Color(ConsoleColor.Green);
             }
             else
             {
                 Color(ConsoleColor.DarkRed);
-            } 
-        }
-
-        private void CursorVisible(bool visibility)
-        {
-            Console.CursorVisible = visibility;
+            }
         }
 
         private void DrawTopLine(int width)
@@ -138,7 +136,7 @@ namespace GameOfLife.Services
         {
             Console.SetCursorPosition(x, y);
             Console.Write("c:" + cells);
-            CountWidthOfInfoString(cells , width);
+            CountWidthOfInfoString(cells, width);
 
             Console.SetCursorPosition(x, y + 1);
             Console.Write("g:" + generation);
@@ -155,7 +153,7 @@ namespace GameOfLife.Services
         {
             int num = input.ToString().Length;
             int newWidth = width - num - 2;
-            for (int i = 0; i < newWidth; i++) Console.Write(" "); 
+            for (int i = 0; i < newWidth; i++) Console.Write(" ");
         }
     }
 }

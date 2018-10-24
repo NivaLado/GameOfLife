@@ -13,10 +13,9 @@ namespace GameOfLife
                 gameSetup,
                 new ConsoleRenderer()
             );
-            
             life.StartLife();
         }
     }
 }
 
-//Nuget Package -Simple injector 
+//Nuget Package -Simple injector //ioc di
