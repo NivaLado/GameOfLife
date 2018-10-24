@@ -37,6 +37,13 @@ namespace GameOfLife.Services
             return number;
         }
 
+        public int[] StringToInt(string input)
+        {
+            string[] tokens = input.Split(' ');
+            int[] numbers = Array.ConvertAll(tokens, int.Parse);
+            return numbers;
+        }
+
         public int ValidateIntMinMax(string message, string errorMessage, int min, int max)
         {
             int number;

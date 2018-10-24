@@ -39,10 +39,22 @@ namespace GameOfLife
         private void NewGame()
         {
             Console.Clear();
-            Globals.Universes = validate.ValidateIntMinMax("Universe Count: ", "Not a valid number, try again.", 1, 1000);
-            Globals.Width = validate.ValidateIntMinMax("Universe Width: ", "Not a valid number, try again.", 0, 119);
-            Globals.Height = validate.ValidateIntMinMax("Universe Height: ", "Not a valid number, try again.", 0, 30);
-            Globals.Pattern = validate.ValidateIntMinMax("Universe Pattern (from 0 to 2): ", "Not a valid number, try again.", 0, 2);
+            Globals.Universes = validate.ValidateIntMinMax(
+                "Universe Count: ", 
+                "Not a valid number, try again.", 
+                1, 1000);
+            Globals.Width = validate.ValidateIntMinMax(
+                "Universe Width: ",
+                "Not a valid number, try again.",
+                0, 119);
+            Globals.Height = validate.ValidateIntMinMax(
+                "Universe Height: ", 
+                "Not a valid number, try again.",
+                0, 30);
+            Globals.Pattern = validate.ValidateIntMinMax(
+                "Universe Pattern (from 0 to 2): ", 
+                "Not a valid number, try again.", 
+                0, 2);
         }
 
         private void LoadGame()

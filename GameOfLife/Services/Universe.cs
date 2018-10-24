@@ -7,11 +7,13 @@ namespace GameOfLife
     {
         public UniverseState uState { get; set; }
         public static int UniverseCounter = 0;
-        private bool notDead = true;
+        public static int id = 0;
 
         public Universe()
         {
             uState = new UniverseState();
+            uState.id = id;
+            id++;
             UniverseCounter++;
         }
 
@@ -30,7 +32,7 @@ namespace GameOfLife
             int neighbors;
             bool state;
 
-            if(notDead)
+            if(uState.notDead)
             {
                 uState.newGrid = uState.grid.Clone() as bool[,];
 
@@ -106,7 +108,7 @@ namespace GameOfLife
         {
             if(uState.cells == 0)
             {
-                notDead = false;
+                uState.notDead = false;
                 UniverseCounter--;
             }
         }

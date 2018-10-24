@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GameOfLife.Constants;
 
 namespace GameOfLife.Services
@@ -26,6 +27,11 @@ namespace GameOfLife.Services
 
                     case ConsoleKey.S:
                         Globals.Save = !Globals.Save;
+                        break;
+
+                    case ConsoleKey.D:
+                        Globals.ChangeVisibleGames = true;
+                        Task.Delay(1000).Wait();
                         break;
 
                     default:

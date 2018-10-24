@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameOfLife.Interfaces;
 
 namespace GameOfLife.Services
@@ -13,38 +14,34 @@ namespace GameOfLife.Services
 
         public void RenderOneField(Universe field, int xOffset, int yOffset)
         {
-            var x = Console.CursorLeft; var y = Console.CursorTop;
-            FieldInfo(field.uState.cells, field.uState.generation , xOffset, y);
+            Console.SetCursorPosition(xOffset, yOffset);
+            FieldColor(field.uState.notDead);
+
+            var y = Console.CursorTop;
+            var grid = field.uState.grid;
+            FieldInfo(
+                grid.GetLength(0),
+                field.uState.cells, 
+                field.uState.generation, 
+                field.uState.id, xOffset, y);
 
             Console.SetCursorPosition(xOffset, Console.CursorTop);
-            DrawTopLine(field.uState.grid.GetLength(0));
-            for (int i = 0; i < field.uState.grid.GetLength(1); i++)
+            DrawTopLine(grid.GetLength(0));
+            for (int i = 0; i < grid.GetLength(1); i++)
             {
-                for (int j = 0; j < field.uState.grid.GetLength(0); j++)
+                for (int j = 0; j < grid.GetLength(0); j++)
                 {
-                    if (j == 0)
-                    {
-                        Console.SetCursorPosition(xOffset, Console.CursorTop);
-                        Console.Write("║");
-                    }
-
-                    Console.Write(field.uState.grid[j, i] ? "x" : " ");
-
-                    if (j == field.uState.grid.GetLength(0) - 1)
-                    {
-                        Console.Write("║");
-                        Console.WriteLine("\r");
-                        Console.SetCursorPosition(xOffset, Console.CursorTop);
-                    }
+                    DrawLeftBorder(j , xOffset);
+                    Console.Write(grid[j, i] ? "x" : " ");
+                    DrawRightBorder(j, xOffset, grid);
                 }
             }
-            DrawBottomLine(field.uState.grid.GetLength(0));
-            Console.SetCursorPosition(xOffset, yOffset);
+            DrawBottomLine(grid.GetLength(0));
         }
 
-        public void RenderMultipleFields(Universe[] _universe)
+        public void RenderMultipleFields(List<Universe> _universe)
         {
-            Console.Clear();
+            //Console.Clear();
             Console.SetCursorPosition(0, 0);
             int borderOffset = 2;
             int xOffset = 0, yOffset = 0;
@@ -52,19 +49,18 @@ namespace GameOfLife.Services
             int height = _universe[0].uState.grid.GetLength(1);
             int width = _universe[0].uState.grid.GetLength(0);
 
-            for (int i = 0; i < _universe.Length; i++)
+            for (int i = 0; i < _universe.Count; i++)
             {
-                if (xOffset >= 120)
+                if (xOffset >= 110)
                 {
                     xOffset = 0;
-                    yOffset += height + borderOffset + 2;
+                    yOffset += height + borderOffset + 3;
                 }
 
                 RenderOneField(_universe[i], xOffset, yOffset);
 
                 xOffset += width + borderOffset;
             }
-            //System.Threading.Thread.Sleep(1000);
         }
 
         public void Clear()
@@ -75,6 +71,19 @@ namespace GameOfLife.Services
         private void Color(ConsoleColor color)
         {
             Console.ForegroundColor = color;
+        }
+
+        private void FieldColor(bool notDead)
+        {
+            if(notDead)
+            {
+                
+                Color(ConsoleColor.Green);
+            }
+            else
+            {
+                Color(ConsoleColor.DarkRed);
+            } 
         }
 
         private void CursorVisible(bool visibility)
@@ -106,13 +115,47 @@ namespace GameOfLife.Services
             Console.WriteLine("\r");
         }
 
-        private void FieldInfo(int cells, int generation, int x, int y)
+        private void DrawLeftBorder(int width, int xOffset)
+        {
+            if (width == 0)
+            {
+                Console.SetCursorPosition(xOffset, Console.CursorTop);
+                Console.Write("║");
+            }
+        }
+
+        private void DrawRightBorder(int width, int xOffset, bool[,] grid)
+        {
+            if (width == grid.GetLength(0) - 1)
+            {
+                Console.Write("║");
+                Console.WriteLine("\r");
+                Console.SetCursorPosition(xOffset, Console.CursorTop);
+            }
+        }
+
+        private void FieldInfo(int width, int cells, int generation, int id, int x, int y)
         {
             Console.SetCursorPosition(x, y);
-            Console.WriteLine("c:" + cells);
+            Console.Write("c:" + cells);
+            CountWidthOfInfoString(cells , width);
+
             Console.SetCursorPosition(x, y + 1);
-            Console.WriteLine("g:" + generation);
-            //Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+            Console.Write("g:" + generation);
+            CountWidthOfInfoString(cells, width);
+
+            Console.SetCursorPosition(x, y + 2);
+            Console.Write("id:" + id);
+            CountWidthOfInfoString(cells, width);
+
+            Console.SetCursorPosition(x, y + 3);
+        }
+
+        private void CountWidthOfInfoString(int input, int width)
+        {
+            int num = input.ToString().Length;
+            int newWidth = width - num - 2;
+            for (int i = 0; i < newWidth; i++) Console.Write(" "); 
         }
     }
 }

@@ -10,7 +10,7 @@ namespace GameOfLife
             gameSetup.SetupGame();
 
             var life = new GenerationManager(
-                gameSetup.universes,
+                gameSetup,
                 new ConsoleRenderer()
             );
             

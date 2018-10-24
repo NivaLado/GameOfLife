@@ -1,4 +1,5 @@
-﻿using GameOfLife.Constants;
+﻿using System.Collections.Generic;
+using GameOfLife.Constants;
 using GameOfLife.Models;
 
 namespace GameOfLife.Services
@@ -6,6 +7,7 @@ namespace GameOfLife.Services
     public class GameInitialization
     {
         public Universe[] universes;
+        public List<Universe> visibleUniverses = new List<Universe>();
 
         public GameInitialization()
         {
@@ -36,6 +38,17 @@ namespace GameOfLife.Services
                     universes[i] = new Universe();
                     universes[i].uState = obj[i];
                 }
+            }
+
+            VisibleUniverses();
+        }
+
+        public void VisibleUniverses()
+        {
+            visibleUniverses.Clear();
+            for (int i = 0; i < Globals.GamesToRender.Length; i++)
+            {
+                visibleUniverses.Add(universes[Globals.GamesToRender[i]]);
             }
         }
     }
